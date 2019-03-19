@@ -44,17 +44,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item){
         switch(item.getItemId()) {
-            case R.id.nav_music:
+            case R.id.nav_search:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new MusicFragment()).commit();
+                        new SearchFragment()).commit();
                 break;
             case R.id.nav_video:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new MovieFragment()).commit();
                 break;
-            case R.id.nav_search:
+            case R.id.nav_music:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new SearchFragment()).commit();
+                        new MusicFragment()).commit();
                 break;
             case R.id.nav_share:
                 Toast.makeText(this, "Share", Toast.LENGTH_SHORT).show();

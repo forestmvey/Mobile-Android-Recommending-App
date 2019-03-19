@@ -8,7 +8,7 @@
     android:background="@android:color/darker_gray">
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/searchHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="75dp"
@@ -26,7 +26,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/searchButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="150dp"
@@ -36,16 +36,16 @@
         android:layout_marginRight="150dp"
         android:layout_marginBottom="8dp"
         android:text="Go"
-        app:layout_constraintBottom_toTopOf="@+id/checkBox6"
+        app:layout_constraintBottom_toTopOf="@+id/moviesCheckBox"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText" />
+        app:layout_constraintTop_toBottomOf="@+id/reccomendationText" />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/reccomendationText"
         android:layout_width="299dp"
         android:layout_height="58dp"
         android:layout_marginStart="100dp"
@@ -58,16 +58,16 @@
         android:gravity="center"
         android:hint="Find your reccomendations"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/button2"
+        app:layout_constraintBottom_toTopOf="@+id/searchButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        app:layout_constraintTop_toBottomOf="@+id/searchHeader"
         app:layout_constraintVertical_bias="0.0" />
 
     <CheckBox
-        android:id="@+id/checkBox"
+        android:id="@+id/authorsCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -75,14 +75,14 @@
         android:layout_marginEnd="50dp"
         android:layout_marginRight="50dp"
         android:text="Authors"
-        app:layout_constraintBaseline_toBaselineOf="@+id/checkBox2"
+        app:layout_constraintBaseline_toBaselineOf="@+id/booksCheckBox"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.571"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/checkBox2" />
+        app:layout_constraintStart_toEndOf="@+id/booksCheckBox" />
 
     <CheckBox
-        android:id="@+id/checkBox2"
+        android:id="@+id/booksCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -90,13 +90,13 @@
         android:layout_marginEnd="10dp"
         android:layout_marginRight="10dp"
         android:text="Books"
-        app:layout_constraintBottom_toTopOf="@+id/checkBox7"
-        app:layout_constraintEnd_toStartOf="@+id/checkBox"
-        app:layout_constraintStart_toEndOf="@+id/checkBox3"
-        app:layout_constraintTop_toBottomOf="@+id/checkBox6" />
+        app:layout_constraintBottom_toTopOf="@+id/gamesCheckBox"
+        app:layout_constraintEnd_toStartOf="@+id/authorsCheckBox"
+        app:layout_constraintStart_toEndOf="@+id/podcastsCheckBox"
+        app:layout_constraintTop_toBottomOf="@+id/moviesCheckBox" />
 
     <CheckBox
-        android:id="@+id/checkBox3"
+        android:id="@+id/podcastsCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
@@ -104,15 +104,15 @@
         android:layout_marginEnd="10dp"
         android:layout_marginRight="10dp"
         android:text="Podcasts"
-        app:layout_constraintBaseline_toBaselineOf="@+id/checkBox2"
-        app:layout_constraintEnd_toStartOf="@+id/checkBox2"
+        app:layout_constraintBaseline_toBaselineOf="@+id/booksCheckBox"
+        app:layout_constraintEnd_toStartOf="@+id/booksCheckBox"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/checkBox2"
+        app:layout_constraintRight_toLeftOf="@+id/booksCheckBox"
         app:layout_constraintStart_toStartOf="parent" />
 
     <CheckBox
-        android:id="@+id/checkBox4"
+        android:id="@+id/musicCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
@@ -120,14 +120,14 @@
         android:layout_marginEnd="10dp"
         android:layout_marginRight="10dp"
         android:text="Music"
-        app:layout_constraintBaseline_toBaselineOf="@+id/checkBox6"
-        app:layout_constraintEnd_toStartOf="@+id/checkBox6"
+        app:layout_constraintBaseline_toBaselineOf="@+id/moviesCheckBox"
+        app:layout_constraintEnd_toStartOf="@+id/moviesCheckBox"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
-        app:layout_constraintRight_toLeftOf="@+id/checkBox6"
+        app:layout_constraintRight_toLeftOf="@+id/moviesCheckBox"
         app:layout_constraintStart_toStartOf="parent" />
 
     <CheckBox
-        android:id="@+id/checkBox5"
+        android:id="@+id/showsCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -135,13 +135,13 @@
         android:layout_marginEnd="50dp"
         android:layout_marginRight="50dp"
         android:text="Shows"
-        app:layout_constraintBaseline_toBaselineOf="@+id/checkBox6"
+        app:layout_constraintBaseline_toBaselineOf="@+id/moviesCheckBox"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/checkBox6" />
+        app:layout_constraintStart_toEndOf="@+id/moviesCheckBox" />
 
     <CheckBox
-        android:id="@+id/checkBox6"
+        android:id="@+id/moviesCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -150,14 +150,14 @@
         android:layout_marginEnd="10dp"
         android:layout_marginRight="10dp"
         android:text="Movies"
-        app:layout_constraintBottom_toTopOf="@+id/checkBox2"
-        app:layout_constraintEnd_toStartOf="@+id/checkBox5"
-        app:layout_constraintRight_toLeftOf="@+id/checkBox5"
-        app:layout_constraintStart_toEndOf="@+id/checkBox4"
-        app:layout_constraintTop_toBottomOf="@+id/button2" />
+        app:layout_constraintBottom_toTopOf="@+id/booksCheckBox"
+        app:layout_constraintEnd_toStartOf="@+id/showsCheckBox"
+        app:layout_constraintRight_toLeftOf="@+id/showsCheckBox"
+        app:layout_constraintStart_toEndOf="@+id/musicCheckBox"
+        app:layout_constraintTop_toBottomOf="@+id/searchButton" />
 
     <CheckBox
-        android:id="@+id/checkBox7"
+        android:id="@+id/gamesCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
@@ -167,12 +167,12 @@
         android:layout_marginBottom="150dp"
         android:text="Games"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/checkBox8"
-        app:layout_constraintStart_toEndOf="@+id/checkBox9"
-        app:layout_constraintTop_toBottomOf="@+id/checkBox2" />
+        app:layout_constraintEnd_toStartOf="@+id/descriptionCheckBox"
+        app:layout_constraintStart_toEndOf="@+id/infoCheckBox"
+        app:layout_constraintTop_toBottomOf="@+id/booksCheckBox" />
 
     <CheckBox
-        android:id="@+id/checkBox8"
+        android:id="@+id/descriptionCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
@@ -180,12 +180,12 @@
         android:layout_marginEnd="20dp"
         android:layout_marginRight="20dp"
         android:text="Item description"
-        app:layout_constraintBaseline_toBaselineOf="@+id/checkBox7"
+        app:layout_constraintBaseline_toBaselineOf="@+id/gamesCheckBox"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/checkBox7" />
+        app:layout_constraintStart_toEndOf="@+id/gamesCheckBox" />
 
     <CheckBox
-        android:id="@+id/checkBox9"
+        android:id="@+id/infoCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -193,7 +193,7 @@
         android:layout_marginEnd="5dp"
         android:layout_marginRight="5dp"
         android:text="Additional info"
-        app:layout_constraintBaseline_toBaselineOf="@+id/checkBox7"
-        app:layout_constraintEnd_toStartOf="@+id/checkBox7"
+        app:layout_constraintBaseline_toBaselineOf="@+id/gamesCheckBox"
+        app:layout_constraintEnd_toStartOf="@+id/gamesCheckBox"
         app:layout_constraintStart_toStartOf="parent" />
 </android.support.constraint.ConstraintLayout>
