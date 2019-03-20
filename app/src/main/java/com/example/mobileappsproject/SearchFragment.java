@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import org.json.JSONException;
+
 public class SearchFragment extends Fragment {
     private Button searchButton;
 
@@ -25,7 +27,11 @@ public class SearchFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 System.out.println("search clicked");
-                ((MainActivity)getActivity()).addSearchFragment();
+                try {
+                    ((MainActivity)getActivity()).addSearchFragment();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
