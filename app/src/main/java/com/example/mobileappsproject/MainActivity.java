@@ -2,6 +2,8 @@ package com.example.mobileappsproject;
 
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -71,6 +73,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }else {
             super.onBackPressed();
         }
+    }
+
+
+    public void addSearchFragment() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        //setContentView(R.layout.fragment_get_api);
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                new APIGetFragment()).commit();
+
+        SimpleFragment simpleFragment = new SimpleFragment();
+        fragmentTransaction.add(R.id.api_list, simpleFragment);
+        //fragmentTransaction.commit();
+        DescriptionFragment descriptionFragment= new DescriptionFragment();
+        fragmentTransaction.add(R.id.api_list, descriptionFragment);
+        fragmentTransaction.commit();
     }
 
 

@@ -12,6 +12,7 @@ import android.widget.Button;
 public class SearchFragment extends Fragment {
     private Button searchButton;
 
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -24,8 +25,7 @@ public class SearchFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 System.out.println("search clicked");
-                //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                  //      new APIGetActivity().commit();
+                ((MainActivity)getActivity()).addSearchFragment();
             }
         });
 
