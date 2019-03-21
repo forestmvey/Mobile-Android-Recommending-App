@@ -26,7 +26,7 @@ public class SearchFragment extends Fragment {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("search clicked");
+//                System.out.println("search clicked");
                 try {
                     ((MainActivity)getActivity()).addSearchFragment();
                 } catch (JSONException e) {
@@ -35,7 +35,6 @@ public class SearchFragment extends Fragment {
             }
         });
 
-        //return inflater.inflate(R.layout.fragment_search, container, false);
         return view;
     }
 

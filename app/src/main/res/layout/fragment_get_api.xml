@@ -2,12 +2,18 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-<LinearLayout
-    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:id="@+id/fragments_get_view">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/fragments_get_view1">
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/item0"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></FrameLayout>
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/item1"
             android:layout_width="match_parent"
@@ -82,10 +88,6 @@
         android:layout_height="match_parent"></FrameLayout>
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/item19"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"></FrameLayout>
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/item20"
         android:layout_width="match_parent"
         android:layout_height="match_parent"></FrameLayout>
 </LinearLayout>

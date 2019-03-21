@@ -3,6 +3,7 @@ package com.example.mobileappsproject;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -14,17 +15,36 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawer;
+    private TextView name;
+    private TextView type;
+    private TextView description;
+    private TextView wikiURL;
+    private TextView yURL;
+    private TextView yID;
+
+    private String sName;
+    private String sType;
+    private String sDescription;
+    private String sWiki;
+    private String sYoutube;
+
+    private int fragsToInstantiate;
 
 
     @Override
@@ -112,33 +132,118 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void addSearchFragment() throws JSONException {
 
         JSONObject dummyTextJson = getDummyObject();
+        //System.out.println(dummyTextJson.toString());
+        JSONArray arr = dummyTextJson.getJSONArray("similar");
+        //System.out.println(arr.toString());
+//        System.out.println(arr.get(0).toString().indexOf(0));
 
-
+        fragsToInstantiate = 0;
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-        //setContentView(R.layout.fragment_get_api);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 new APIGetFragment()).commit();
 
-        SimpleFragment simpleFragment = new SimpleFragment();
-        fragmentTransaction.add(R.id.item1, simpleFragment);
-        //fragmentTransaction.commit();
-        DescriptionFragment descriptionFragment1= new DescriptionFragment();
-        fragmentTransaction.add(R.id.item2, descriptionFragment1);
-        SimpleFragment simpleFragment1= new SimpleFragment();
-        fragmentTransaction.add(R.id.item3, simpleFragment1);
-        DescriptionFragment descriptionFragment3= new DescriptionFragment();
-        fragmentTransaction.add(R.id.item4, descriptionFragment3);
 
+        ArrayList<DescriptionFragment> FRAGMENTS = new ArrayList<>();
+
+
+        for (int i = 0; i < arr.length(); i++) {
+            System.out.println("arr len = " + arr.length());
+            JSONObject json = arr.getJSONObject(i);
+            System.out.println(json.toString());
+            Iterator<String> keys = json.keys();
+
+            while (keys.hasNext()) {
+                String key = keys.next();
+                //System.out.println("Key :" + key + "  Value :" + json.get(key));
+                //System.out.println(json.getString(key));
+                sName = json.getString(key);
+                key = keys.next();
+                sType = json.getString(key);
+                key = keys.next();
+                sDescription = json.getString(key);
+                key = keys.next();
+                sWiki = json.getString(key);
+                key = keys.next();
+                sYoutube = json.getString(key);
+                FRAGMENTS.add(DescriptionFragment.newInstance(sName, sType, sDescription, sWiki, sYoutube));
+                fragsToInstantiate += 1;
+                break;
+            }
+        }
+
+        for(int i = 0; i < fragsToInstantiate; i++) {
+            switch(i){
+                case 0:
+                    fragmentTransaction.add(R.id.item0, FRAGMENTS.get(i));
+                    break;
+                case 1:
+                    fragmentTransaction.add(R.id.item1, FRAGMENTS.get(i));
+                    break;
+                case 2:
+                    fragmentTransaction.add(R.id.item2, FRAGMENTS.get(i));
+                    break;
+                case 3:
+                    fragmentTransaction.add(R.id.item3, FRAGMENTS.get(i));
+                    break;
+                case 4:
+                    fragmentTransaction.add(R.id.item4, FRAGMENTS.get(i));
+                    break;
+                case 5:
+                    fragmentTransaction.add(R.id.item5, FRAGMENTS.get(i));
+                    break;
+                case 6:
+                    fragmentTransaction.add(R.id.item6, FRAGMENTS.get(i));
+                    break;
+                case 7:
+                    fragmentTransaction.add(R.id.item7, FRAGMENTS.get(i));
+                    break;
+                case 8:
+                    fragmentTransaction.add(R.id.item8, FRAGMENTS.get(i));
+                    break;
+                case 9:
+                    fragmentTransaction.add(R.id.item9, FRAGMENTS.get(i));
+                    break;
+                case 10:
+                    fragmentTransaction.add(R.id.item10, FRAGMENTS.get(i));
+                    break;
+                case 11:
+                    fragmentTransaction.add(R.id.item11, FRAGMENTS.get(i));
+                    break;
+                case 12:
+                    fragmentTransaction.add(R.id.item12, FRAGMENTS.get(i));
+                    break;
+                case 13:
+                    fragmentTransaction.add(R.id.item13, FRAGMENTS.get(i));
+                    break;
+                case 14:
+                    fragmentTransaction.add(R.id.item14, FRAGMENTS.get(i));
+                    break;
+                case 15:
+                    fragmentTransaction.add(R.id.item15, FRAGMENTS.get(i));
+                    break;
+                case 16:
+                    fragmentTransaction.add(R.id.item16, FRAGMENTS.get(i));
+                    break;
+                case 17:
+                    fragmentTransaction.add(R.id.item17, FRAGMENTS.get(i));
+                    break;
+                case 18:
+                    fragmentTransaction.add(R.id.item18, FRAGMENTS.get(i));
+                    break;
+                case 19:
+                    fragmentTransaction.add(R.id.item19, FRAGMENTS.get(i));
+                    break;
+            }
+        }
         fragmentTransaction.commit();
 
 
 
        // int spacesToIndentEachLevel = 2;
         //JSONObject json = new JSONObject(loadJSONFromAsset(getApplicationContext())).toString(spacesToIndentEachLevel);
-        //String json = new String(loadJSONFromAsset(getApplicationContext()));
-        System.out.println(dummyTextJson.toString(4));
+//        String json = new String(loadJSONFromAsset(getApplicationContext()));
+        //System.out.println(dummyTextJson.toString(4));
     }
     public JSONObject getDummyObject() throws JSONException {
         JSONObject json = new JSONObject();
@@ -151,6 +256,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         obj.put("type" , "movie");
         obj.put("wTeaser" , "\n\nPulp Fiction is a 1994 American crime thriller drama film written and directed by Quentin Tarantino; it is based on a story by Tarantino and Roger Avary. Starring John Travolta, Samuel ");
         obj.put("wUrl" , "http://en.wikipedia.org/wiki/Pulp_Fiction_(movie)");
+        obj.put("yUrl" , "https://www.youtube-nocookie.com/embed/s7EdQ4FqbhY");
+        obj.put("yID" , "s7EdQ4FqbhY");
+        jsonArray.put(obj);
+
+        json.put("similar", jsonArray);
+        obj = new JSONObject();
+        obj.put("name" , "harry potter");
+        obj.put("type" , "movie");
+        obj.put("wTeaser" , "\n\n I don't really want to write about harry potter. It's a really bad movie but I haven't seen it in a long time so meh");
+        obj.put("wUrl" , "http://en.wikipedia.org/wiki/harry_potter_(movie)");
         obj.put("yUrl" , "https://www.youtube-nocookie.com/embed/s7EdQ4FqbhY");
         obj.put("yID" , "s7EdQ4FqbhY");
         jsonArray.put(obj);
