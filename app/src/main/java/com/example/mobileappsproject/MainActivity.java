@@ -29,20 +29,33 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawer;
-    private TextView name;
-    private TextView type;
-    private TextView description;
-    private TextView wikiURL;
-    private TextView yURL;
-    private TextView yID;
 
     private String sName;
     private String sType;
     private String sDescription;
     private String sWiki;
     private String sYoutube;
+
+    private String baseUrl = "http://tastedive.com/api/similar?k=329970-moverecc-O6MBUCNY";
+    private String addUrl = "";
+    private String typeBook = "&type=book";
+    private String typePodcast = "&type=podcast";
+    private String typeShow = "&type=show";
+    private String typeMusic = "&type=music";
+    private String typeGames = "&type=games";
+    private String typeAuthor = "&type=author";
+    private String typeMovies = "&type=movie";
+
+    private JSONObject typesObj;
+    public ArrayList<String> typesCheckList;
 
     private int fragsToInstantiate;
 
@@ -64,6 +77,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+        typesObj = new JSONObject();
+        typesCheckList = new ArrayList<>();
+        try {
+            typesObj.put("typeBook" , "&type=book");
+            typesObj.put("typeMovie" , "&type=movie");
+            typesObj.put("typeMusic" , "&type=music");
+            typesObj.put("typePodcast" , "&type=podcast");
+            typesObj.put("typeAuthor" , "&type=author");
+            typesObj.put("typeGame" , "&type=game");
+            typesObj.put("typeShow" , "&type=show");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
 
         if(savedInstanceState == null) {
@@ -148,9 +175,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         for (int i = 0; i < arr.length(); i++) {
-            System.out.println("arr len = " + arr.length());
+           // System.out.println("arr len = " + arr.length());
             JSONObject json = arr.getJSONObject(i);
-            System.out.println(json.toString());
+            //System.out.println(json.toString());
             Iterator<String> keys = json.keys();
 
             while (keys.hasNext()) {
@@ -237,14 +264,37 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         }
         fragmentTransaction.commit();
-
-
-
-       // int spacesToIndentEachLevel = 2;
-        //JSONObject json = new JSONObject(loadJSONFromAsset(getApplicationContext())).toString(spacesToIndentEachLevel);
-//        String json = new String(loadJSONFromAsset(getApplicationContext()));
-        //System.out.println(dummyTextJson.toString(4));
+        getJSON();
     }
+
+    public void getJSON() {
+
+        OkHttpClient client = new OkHttpClient();
+        String url = baseUrl + addUrl;
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if(response.isSuccessful()){
+                    final String myResponse = response.body().string();
+                    MainActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            System.out.println(myResponse);
+                        }
+                    });
+                }
+            }
+        });
+    }
+
     public JSONObject getDummyObject() throws JSONException {
         JSONObject json = new JSONObject();
 
@@ -272,8 +322,35 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         json.put("similar", jsonArray);
 
+        obj = new JSONObject();
+        obj.put("name" , "sword fish");
+        obj.put("type" , "movie");
+        obj.put("wTeaser" , "\n\n don't remember a whole lot of this movie! JOHN TRAVOLTA");
+        obj.put("wUrl" , "http://en.wikipedia.org/wiki/sword_fish_(movie)");
+        obj.put("yUrl" , "https://www.youtube-nocookie.com/embed/s7EdQ4FqbhY");
+        obj.put("yID" , "s7EdQ4FqbhY");
+        jsonArray.put(obj);
+
+        json.put("similar", jsonArray);
+
 
         return json;
+    }
+
+    public void setTypeList(String type, boolean checkOrNo) {
+        if(checkOrNo){
+            typesCheckList.add(type);
+            System.out.println("adding");
+        } else{
+            typesCheckList.remove(type);
+            System.out.println("deleting");
+        }
+    }
+
+    public void setAsyncUrl() {
+        for(int i = 0; i < typesObj.length(); i++) {
+
+        }
     }
 
 

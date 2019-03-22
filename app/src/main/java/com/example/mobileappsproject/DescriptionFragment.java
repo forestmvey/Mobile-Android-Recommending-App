@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 
 public class DescriptionFragment extends Fragment {
-    public TextView theView;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -43,5 +42,4 @@ public class DescriptionFragment extends Fragment {
         frag.setArguments(args);
         return frag;
     }
-
 }
