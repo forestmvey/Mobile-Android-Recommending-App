@@ -3,7 +3,6 @@ package com.example.mobileappsproject;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -13,16 +12,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -44,15 +38,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private String sWiki;
     private String sYoutube;
 
-    private String baseUrl = "http://tastedive.com/api/similar?k=329970-moverecc-O6MBUCNY";
-    private String addUrl = "";
-    private String typeBook = "&type=book";
-    private String typePodcast = "&type=podcast";
-    private String typeShow = "&type=show";
-    private String typeMusic = "&type=music";
-    private String typeGames = "&type=games";
-    private String typeAuthor = "&type=author";
-    private String typeMovies = "&type=movie";
+    String myResponse;
+
+    private String baseUrl = "http://tastedive.com/api/similar?k=329970-moverecc-O6MBUCNY&q=pulp+fiction";
 
     private JSONObject typesObj;
     public ArrayList<String> typesCheckList;
@@ -157,7 +145,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void addSearchFragment() throws JSONException {
-
+        //JSONObject ary = new JSONObject(getJSON(setAsyncUrl()));
+        //System.out.println("working?" + ary.toString());
         JSONObject dummyTextJson = getDummyObject();
         //System.out.println(dummyTextJson.toString());
         JSONArray arr = dummyTextJson.getJSONArray("similar");
@@ -264,13 +253,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         }
         fragmentTransaction.commit();
-        getJSON();
+        System.out.println(getJSON(setAsyncUrl()));
     }
 
-    public void getJSON() {
+    public String getJSON(String url) {
 
         OkHttpClient client = new OkHttpClient();
-        String url = baseUrl + addUrl;
+
+
         Request request = new Request.Builder()
                 .url(url)
                 .build();
@@ -283,16 +273,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 if(response.isSuccessful()){
-                    final String myResponse = response.body().string();
-                    MainActivity.this.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            System.out.println(myResponse);
-                        }
-                    });
+                    myResponse = response.body().string();
+                    System.out.println(myResponse);
+
+//                    MainActivity.this.runOnUiThread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            try {
+//                                setAsyncUrl();
+//                            } catch (JSONException e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                    });
                 }
             }
         });
+        return myResponse;
     }
 
     public JSONObject getDummyObject() throws JSONException {
@@ -340,17 +337,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void setTypeList(String type, boolean checkOrNo) {
         if(checkOrNo){
             typesCheckList.add(type);
-            System.out.println("adding");
+            //System.out.println("adding");
         } else{
             typesCheckList.remove(type);
-            System.out.println("deleting");
+            //System.out.println("deleting");
         }
     }
 
-    public void setAsyncUrl() {
-        for(int i = 0; i < typesObj.length(); i++) {
-
+    public String setAsyncUrl() throws JSONException {
+        String url = baseUrl;
+        for(int i = 0; i < typesCheckList.size(); i++) {
+           if(typesObj.has(typesCheckList.get(i))){
+               url += typesObj.getString(typesCheckList.get(i));
+           }
         }
+        return url;
     }
 
 
