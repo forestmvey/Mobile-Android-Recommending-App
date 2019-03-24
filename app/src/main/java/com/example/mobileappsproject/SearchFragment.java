@@ -87,7 +87,7 @@ public class SearchFragment extends Fragment {
             public void onClick(View v) {
 //                System.out.println("search clicked");
                 try {
-                    ((MainActivity)getActivity()).addSearchFragment();
+                    ((MainActivity)getActivity()).getJSON();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
