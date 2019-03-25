@@ -1,6 +1,7 @@
 package com.example.mobileappsproject;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
@@ -47,6 +48,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private JSONArray jArr;
     public String jString;
 
+    private JSONArray moviesArray;
+    private JSONArray authorsArray;
+    private JSONArray showsArray;
+    private JSONArray musicArray;
+    private JSONArray booksArray;
+    private JSONArray podcastArray;
+    private JSONArray gamesArray;
+
+
     private boolean VV = false;
     private boolean V = false;
 
@@ -70,6 +80,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+        // Instantiate all saved objects arrays
+        moviesArray = new JSONArray();
+        musicArray = new JSONArray();
+        showsArray = new JSONArray();
+        podcastArray = new JSONArray();
+        gamesArray = new JSONArray();
+        authorsArray = new JSONArray();
+        booksArray = new JSONArray();
 
         typesObj = new JSONObject();
         typesCheckList = new ArrayList<>();
@@ -317,5 +336,56 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
     public void setSearchName(String name) {
         searchName = "&" + name;
+    }
+    public void saveToJson(String name, String type) throws JSONException {
+//        SharedPreferences sharedPref = getSharedPreferences( "appData", Context.MODE_WORLD_WRITEABLE );
+//        SharedPreferences.Editor prefEditor = getSharedPreferences( "appData", Context.MODE_WORLD_WRITEABLE ).edit();
+//        prefEditor.putString(obj.toString());
+//        prefEditor.commit();
+//        jArr.getJSONArray(i);
+//        System.out.println(obj.get(0).toString())
+        System.out.println("name = " + name + " type = " + type);
+        JSONObject jObj;
+        for(int i = 0; i < jArr.length(); i++) {
+            jObj = jArr.getJSONObject(i);
+//            System.out.println("jObj = " + jObj.toString());
+//            System.out.println("name = " + jObj.getString("Name") + " type = " + jObj.getString("Type"));
+            if(jObj.getString("Name").equals(name) && jObj.getString("Type").equals(type)){
+                System.out.println("saving object");
+                saveJsonObject(jArr.getJSONObject(i), type);
+            }
+        }
+    }
+    public void saveJsonObject(JSONObject jObj, String type) {
+        switch(type) {
+            case "Book":
+                booksArray.put(jObj);
+                if(V)System.out.println("booksArray = " + booksArray.toString());
+                break;
+            case "Music":
+                musicArray.put(jObj);
+                if(V)System.out.println("booksArray = " + musicArray.toString());
+                break;
+            case "Author":
+                authorsArray.put(jObj);
+                if(V)System.out.println("booksArray = " + authorsArray.toString());
+                break;
+            case "Movie":
+                moviesArray.put(jObj);
+                if(V)System.out.println("booksArray = " + moviesArray.toString());
+                break;
+            case "Show":
+                showsArray.put(jObj);
+                if(V)System.out.println("booksArray = " + showsArray.toString());
+                break;
+            case "Podcast":
+                podcastArray.put(jObj);
+                if(V)System.out.println("booksArray = " + podcastArray.toString());
+                break;
+            case "Game":
+                gamesArray.put(jObj);
+                if(V)System.out.println("booksArray = " + gamesArray.toString());
+                break;
+        }
     }
 }
