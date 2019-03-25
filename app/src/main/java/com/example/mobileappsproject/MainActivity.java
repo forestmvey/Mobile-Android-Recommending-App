@@ -358,33 +358,33 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
     public void saveJsonObject(JSONObject jObj, String type) {
         switch(type) {
-            case "Book":
+            case "book":
                 booksArray.put(jObj);
                 if(V)System.out.println("booksArray = " + booksArray.toString());
                 break;
-            case "Music":
+            case "music":
                 musicArray.put(jObj);
-                if(V)System.out.println("booksArray = " + musicArray.toString());
+                if(V)System.out.println("musicArray = " + musicArray.toString());
                 break;
-            case "Author":
+            case "author":
                 authorsArray.put(jObj);
-                if(V)System.out.println("booksArray = " + authorsArray.toString());
+                if(V)System.out.println("authorsArray = " + authorsArray.toString());
                 break;
-            case "Movie":
+            case "movie":
                 moviesArray.put(jObj);
-                if(V)System.out.println("booksArray = " + moviesArray.toString());
+                if(V)System.out.println("moviesArray = " + moviesArray.toString());
                 break;
-            case "Show":
+            case "show":
                 showsArray.put(jObj);
-                if(V)System.out.println("booksArray = " + showsArray.toString());
+                if(V)System.out.println("showsArray = " + showsArray.toString());
                 break;
-            case "Podcast":
+            case "podcast":
                 podcastArray.put(jObj);
-                if(V)System.out.println("booksArray = " + podcastArray.toString());
+                if(V)System.out.println("podcastsArray = " + podcastArray.toString());
                 break;
-            case "Game":
+            case "game":
                 gamesArray.put(jObj);
-                if(V)System.out.println("booksArray = " + gamesArray.toString());
+                if(V)System.out.println("gamesArray = " + gamesArray.toString());
                 break;
         }
     }
