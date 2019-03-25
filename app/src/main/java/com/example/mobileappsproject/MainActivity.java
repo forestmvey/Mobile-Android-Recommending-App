@@ -3,7 +3,6 @@ package com.example.mobileappsproject;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -13,22 +12,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -44,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private String sDescription;
     private String sWiki;
     private String sYoutube;
+    private String searchName;
 
     private String baseUrl = "http://tastedive.com/api/similar?info=1&k=329970-moverecc-O6MBUCNY&q=pulp+fiction";
     private String url;
@@ -158,45 +150,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void addSearchFragment() throws JSONException {
-//        getJSON();
         if(V)System.out.println("result = " + jString);
-
             jObj = new JSONObject(jString)
                     .getJSONObject("Similar");
 
             jArr = new JSONArray();
             JSONArray newJArray = jObj.getJSONArray("Results");
-//                        System.out.println("jobj to check = " + jObj.toString());
 
-//            System.out.println("newjar length = " + newJArray.length());
             for (int i = 0; i < newJArray.length(); i++) {
                 jObj = newJArray.getJSONObject(i);
                 jArr.put(jObj);
-//                Iterator<String> keys = jObj.keys();
-//                while (keys.hasNext()) {
-//                    String key = keys.next();
-//                    jArr.put;
-//                }
             }
 
 
-        System.out.println("jArr " + jArr.toString());
-        //System.out.println("working? " + jObj.toString());
+        if(V)System.out.println("jArr = " + jArr.toString());
 
-//        JSONObject dummyTextJson = getJSON();
-//
-//        jArr = jObj.getJSONArray("similar");
-//        for(int i = 0; i < jArr.length(); i++) {
-//            JSONObject explObj = jArr.getJSONObject(i);
-//            System.out.println(explObj.toString());
-//        }
 
-        JSONObject dummyTextJson = getDummyObject();
-        //System.out.println(dummyTextJson.toString());
-        JSONArray arr = dummyTextJson.getJSONArray("similar");
-        System.out.println("arr toString " + arr.toString());
-        //System.out.println(arr.toString());
-//        System.out.println(arr.get(0).toString().indexOf(0));
 
         fragsToInstantiate = 0;
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -209,9 +178,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         for (int i = 0; i < jArr.length(); i++) {
-           // System.out.println("arr len = " + arr.length());
             JSONObject json = jArr.getJSONObject(i);
-            //System.out.println(json.toString());
             Iterator<String> keys = json.keys();
 
             while (keys.hasNext()) {
@@ -298,7 +265,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         }
         fragmentTransaction.commit();
-//        getJSON();
     }
 
     public void getJSON() throws JSONException {
@@ -317,84 +283,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onResponse(Call call, Response response) throws IOException {
                 if(response.isSuccessful()){
                     jString = new String(response.body().string());
-//                    System.out.println("myResponse = " + myResponse);
-//                    jString.concat(myResponse);
                     if(V)System.out.println("jString = " + jString);
                     try {
                         addSearchFragment();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-//                    try {
-//                        jObj= new JSONObject(myResponse)
-//                                .getJSONObject("Similar");
-//
-//                        jArr = new JSONArray();
-//                        JSONArray newJArray = jObj.getJSONArray("Results");
-////                        System.out.println("jobj to check = " + jObj.toString());
-//
-//                        System.out.println("newjar length = "+newJArray.length());
-//                        for(int i = 0; i < newJArray.length(); i++) {
-//                            jObj = newJArray.getJSONObject(i);
-//
-//                            Iterator<String> keys = jObj.keys();
-//                            while(keys.hasNext()){
-//                                String key = keys.next();
-//                                jArr.put(jObj.get(key));
-//                            }
-//                        }
-////                        if(V)System.out.println("JSON object = " + jObj.toString());
-////                        if(V)System.out.println("JSON Array = " + jArr.toString());
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                        if(V)System.out.println("on response catcher");
-//                    }
+
                 }
             }
         });
-        //return jString;
-    }
-
-    public JSONObject getDummyObject() throws JSONException {
-        JSONObject json = new JSONObject();
-
-
-
-        JSONArray jsonArray = new JSONArray();
-        JSONObject obj = new JSONObject();
-        obj.put("name" , "pulp fiction");
-        obj.put("type" , "movie");
-        obj.put("wTeaser" , "\n\nPulp Fiction is a 1994 American crime thriller drama film written and directed by Quentin Tarantino; it is based on a story by Tarantino and Roger Avary. Starring John Travolta, Samuel ");
-        obj.put("wUrl" , "http://en.wikipedia.org/wiki/Pulp_Fiction_(movie)");
-        obj.put("yUrl" , "https://www.youtube-nocookie.com/embed/s7EdQ4FqbhY");
-        obj.put("yID" , "s7EdQ4FqbhY");
-        jsonArray.put(obj);
-
-        json.put("similar", jsonArray);
-        obj = new JSONObject();
-        obj.put("name" , "harry potter");
-        obj.put("type" , "movie");
-        obj.put("wTeaser" , "\n\n I don't really want to write about harry potter. It's a really bad movie but I haven't seen it in a long time so meh");
-        obj.put("wUrl" , "http://en.wikipedia.org/wiki/harry_potter_(movie)");
-        obj.put("yUrl" , "https://www.youtube-nocookie.com/embed/s7EdQ4FqbhY");
-        obj.put("yID" , "s7EdQ4FqbhY");
-        jsonArray.put(obj);
-
-        json.put("similar", jsonArray);
-
-        obj = new JSONObject();
-        obj.put("name" , "sword fish");
-        obj.put("type" , "movie");
-        obj.put("wTeaser" , "\n\n don't remember a whole lot of this movie! JOHN TRAVOLTA");
-        obj.put("wUrl" , "http://en.wikipedia.org/wiki/sword_fish_(movie)");
-        obj.put("yUrl" , "https://www.youtube-nocookie.com/embed/s7EdQ4FqbhY");
-        obj.put("yID" , "s7EdQ4FqbhY");
-        jsonArray.put(obj);
-
-        json.put("similar", jsonArray);
-
-
-        return json;
     }
 
     public void setTypeList(String type, boolean checkOrNo) {
