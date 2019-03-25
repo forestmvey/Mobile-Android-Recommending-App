@@ -4,12 +4,16 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.text.Editable;
+import android.text.SpannableStringBuilder;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.TextView;
 
 import org.json.JSONException;
 
@@ -22,6 +26,7 @@ public class SearchFragment extends Fragment {
     private CheckBox showCheck;
     private CheckBox podcastCheck;
     private CheckBox gameCheck;
+    private TextView searchName;
 
     @Nullable
     @Override
@@ -37,6 +42,7 @@ public class SearchFragment extends Fragment {
         showCheck = (CheckBox) v.findViewById(R.id.showsCheckBox);
         podcastCheck = (CheckBox) v.findViewById(R.id.podcastsCheckBox);
         gameCheck = (CheckBox) v.findViewById(R.id.gamesCheckBox);
+        searchName = (TextView) v.findViewById(R.id.recommendationText);
 
         movieCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -82,6 +88,23 @@ public class SearchFragment extends Fragment {
         });
 
 
+        searchName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    ((MainActivity) getActivity()).setSearchName(searchName.getText().toString());
+               }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,5 +122,4 @@ public class SearchFragment extends Fragment {
     private void setTypesCheckList(String toSet, CheckBox box){
         ((MainActivity)getActivity()).setTypeList(toSet, (box.isChecked()));
     }
-
 }

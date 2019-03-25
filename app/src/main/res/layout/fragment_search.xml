@@ -61,7 +61,7 @@
         android:ems="10"
         android:gravity="center"
         android:hint="Find your recommendations"
-        android:inputType="textPersonName"
+        android:inputType="textNoSuggestions"
         app:layout_constraintBottom_toTopOf="@+id/searchButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
