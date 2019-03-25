@@ -35,9 +35,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private String sDescription;
     private String sWiki;
     private String sYoutube;
-    private String searchName;
 
-    private String baseUrl = "http://tastedive.com/api/similar?info=1&k=329970-moverecc-O6MBUCNY&q=pulp+fiction";
+    public String searchName;
+    private String baseUrl = "http://tastedive.com/api/similar?info=1&k=329970-moverecc-O6MBUCNY";
     private String url;
 
     private JSONObject typesObj;
@@ -306,7 +306,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public String setAsyncUrl() throws JSONException {
-        url = baseUrl;
+        url = baseUrl + searchName;
         for(int i = 0; i < typesCheckList.size(); i++) {
             if(typesObj.has(typesCheckList.get(i))){
                 url += typesObj.getString(typesCheckList.get(i));
@@ -314,5 +314,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         if(V)System.out.println(url);
         return url;
+    }
+    public void setSearchName(String name) {
+        searchName = "&" + name;
     }
 }
