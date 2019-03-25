@@ -14,6 +14,9 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import com.google.gson.Gson;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -56,6 +59,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private JSONArray podcastArray;
     private JSONArray gamesArray;
 
+    private SharedPreferences sharedPref;
+    private SharedPreferences.Editor prefEditor;
 
     private boolean VV = false;
     private boolean V = false;
@@ -143,29 +148,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             super.onBackPressed();
         }
     }
+    private void saveJSON(String myList) {
+        SharedPreferences sharedPreferences = getSharedPreferences(myList, MODE_PRIVATE);
+        SharedPreferences.Editor prefEditor = sharedPreferences.edit();
+        Gson gson = new Gson();
+        String typeList = gson.toJson(musicArray);
+        prefEditor.putString( myList, typeList );
+        prefEditor.apply();
+        System.out.println("Saving JSON");
+    }
 
-    public String loadJSONFromAsset(Context context) {
-        String json = null;
-        try {
-            InputStream is = context.getAssets().open("C:\\Users\\fores\\AndroidStudioProjects\\MobileAppsProject2\\dummyJSON.json");
-
-            int size = is.available();
-
-            byte[] buffer = new byte[size];
-
-            is.read(buffer);
-
-            is.close();
-
-            json = new String(buffer, "UTF-8");
-
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            return null;
-        }
-        return json;
-
+    private String readJSON(String myList) {
+        SharedPreferences prefs = this.getSharedPreferences(myList, Context.MODE_PRIVATE);
+        String savedJSON = prefs.getString(myList, null);
+        return savedJSON;
     }
 
     public void addSearchFragment() throws JSONException {
@@ -338,8 +334,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         searchName = "&" + name;
     }
     public void saveToJson(String name, String type) throws JSONException {
-//        SharedPreferences sharedPref = getSharedPreferences( "appData", Context.MODE_WORLD_WRITEABLE );
-//        SharedPreferences.Editor prefEditor = getSharedPreferences( "appData", Context.MODE_WORLD_WRITEABLE ).edit();
+//        JSONStorage sharedPref = getSharedPreferences( "appData", Context.MODE_WORLD_WRITEABLE );
+//        JSONStorage.Editor prefEditor = getSharedPreferences( "appData", Context.MODE_WORLD_WRITEABLE ).edit();
 //        prefEditor.putString(obj.toString());
 //        prefEditor.commit();
 //        jArr.getJSONArray(i);
@@ -357,34 +353,49 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
     public void saveJsonObject(JSONObject jObj, String type) {
+
         switch(type) {
             case "book":
                 booksArray.put(jObj);
                 if(V)System.out.println("booksArray = " + booksArray.toString());
+                saveJSON(type);
+                System.out.println(readJSON(type));
                 break;
             case "music":
                 musicArray.put(jObj);
                 if(V)System.out.println("musicArray = " + musicArray.toString());
+                saveJSON(type);
+                System.out.println(readJSON(type));
                 break;
             case "author":
                 authorsArray.put(jObj);
                 if(V)System.out.println("authorsArray = " + authorsArray.toString());
+                saveJSON(type);
+                System.out.println(readJSON(type));
                 break;
             case "movie":
                 moviesArray.put(jObj);
                 if(V)System.out.println("moviesArray = " + moviesArray.toString());
+                saveJSON(type);
+                System.out.println(readJSON(type));
                 break;
             case "show":
                 showsArray.put(jObj);
                 if(V)System.out.println("showsArray = " + showsArray.toString());
+                saveJSON(type);
+                System.out.println(readJSON(type));
                 break;
             case "podcast":
                 podcastArray.put(jObj);
                 if(V)System.out.println("podcastsArray = " + podcastArray.toString());
+                saveJSON(type);
+                System.out.println(readJSON(type));
                 break;
             case "game":
                 gamesArray.put(jObj);
                 if(V)System.out.println("gamesArray = " + gamesArray.toString());
+                saveJSON(type);
+                System.out.println(readJSON(type));
                 break;
         }
     }
