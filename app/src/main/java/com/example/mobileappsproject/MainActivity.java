@@ -93,6 +93,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
 
         musicArray = new ArrayList<JSONObject>();
+        moviesArray = new ArrayList<JSONObject>();
+        showsArray = new ArrayList<JSONObject>();
+        authorsArray = new ArrayList<JSONObject>();
+        booksArray = new ArrayList<JSONObject>();
+        gamesArray = new ArrayList<JSONObject>();
+        podcastsArray = new ArrayList<JSONObject>();
         //musicArray = readJSON("music", MUSIC_FILE, musicArray);
         //System.out.println("booksArray after readJSON = " + musicArray.toString());
 
@@ -130,7 +136,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_movies:
 //                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
 //                        new MovieFragment()).commit();
-                moviesArray = readJSON("movies", MOVIES_FILE, moviesArray);
+                moviesArray = readJSON("movie", MOVIES_FILE, moviesArray);
+                System.out.println("movies array before navigation = " + moviesArray.toString());
                 addSavedFragment(moviesArray);
                 break;
             case R.id.nav_music:
@@ -143,7 +150,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_shows:
 //                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
 //                        new MusicFragment()).commit();
-                showsArray = readJSON("shows", SHOWS_FILE, showsArray);
+                showsArray = readJSON("show", SHOWS_FILE, showsArray);
                 addSavedFragment(showsArray);
                 break;
             case R.id.nav_books:
@@ -155,19 +162,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_authors:
 //                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
 //                        new MusicFragment()).commit();
-                authorsArray = readJSON("authors", AUTHORS_FILE, authorsArray);
+                authorsArray = readJSON("author", AUTHORS_FILE, authorsArray);
                 addSavedFragment(authorsArray);
                 break;
             case R.id.nav_games:
 //                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
 //                        new MusicFragment()).commit();
-                gamesArray = readJSON("games", GAMES_FILE, gamesArray);
+                gamesArray = readJSON("game", GAMES_FILE, gamesArray);
                 addSavedFragment(gamesArray);
                 break;
             case R.id.nav_podcasts:
 //                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
 //                        new MusicFragment()).commit();
-                podcastsArray = readJSON("podcasts", PODCASTS_FILE, podcastsArray);
+                podcastsArray = readJSON("podcast", PODCASTS_FILE, podcastsArray);
                 addSavedFragment(podcastsArray);
                 break;
         }
@@ -189,69 +196,40 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void addSavedFragment(ArrayList<JSONObject> myList) throws JSONException {
 
-//        jObj = new JSONObject(jString);
-//        System.out.println("jobj  " + jObj.toString());
         jArr = new JSONArray();
-//        JSONArray newJArray = jObj.getJSONArray("values");
-//        JSONObject jO = newJArray.getJSONObject(0);
-//        System.out.println("newJO= " + jO.toString());
-//        Iterator keys = jO.keys();
-//        System.out.println("keys = " + keys.toString());
-//        while(keys.hasNext()) {
-//            String key = keys.next().toString();
-//            System.out.println("key = " + key);
-//            jObj = new JSONObject(key);
-//            jArr.put(jObj);
-//        }
         for(int i = 0; i < myList.size(); i++) {
             JSONObject x = myList.get(i);
             System.out.println("the string is = " + x.toString());
-//            JSONObject jO = new JSONObject(x);
             jArr.put(x);
         }
-
-
-//        for (int i = 0; i < jO.length(); i++) {
-//            jObj = jO.;
-//            jArr.put(jObj);
-//        }
-
         addFragments(jArr);
     }
 
     public void addSearchFragment(String jString) throws JSONException {
 
-
         jObj = new JSONObject(jString)
                 .getJSONObject("Similar");
         jArr = new JSONArray();
         JSONArray newJArray = jObj.getJSONArray("Results");
-
         if(V)System.out.println("jString = " + jString);
-
 
         for (int i = 0; i < newJArray.length(); i++) {
             jObj = newJArray.getJSONObject(i);
             jArr.put(jObj);
         }
 
-
         if(V)System.out.println("jArr = " + jArr.toString());
         addFragments(jArr);
         }
 
         private void addFragments(JSONArray jArr) throws JSONException {
-//            System.out.println("addFragments jArr = " + jArr.toString());
-//            System.out.println("addFragments jArr[0] = " + jArr.getJSONObject(0));
             fragsToInstantiate = 0;
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new APIGetFragment()).commit();
 
-
             ArrayList<DescriptionFragment> FRAGMENTS = new ArrayList<>();
-
 
             for (int i = 0; i < jArr.length(); i++) {
                 JSONObject json = jArr.getJSONObject(i);
@@ -351,14 +329,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         String typeList = gson.toJson(arr);
         prefEditor.putString( myList, typeList );
         prefEditor.apply();
-        System.out.println("Saving JSON");
+        System.out.println("Saving JSON myList = " + myList);
         System.out.println("saving this item " + sharedPreferences.getString(myList, null));
     }
 
     private ArrayList<JSONObject> readJSON(String myList, String saveFile, ArrayList<JSONObject> arr) {
         SharedPreferences prefs = getSharedPreferences(saveFile, Context.MODE_PRIVATE);
         String savedJSON = prefs.getString(myList, null);
-        System.out.println("reading these items " + savedJSON);
+        System.out.println("reading these items " + savedJSON + "myList = " + myList);
         Gson gson = new Gson();
         Type type = new TypeToken<ArrayList<JSONObject>>() {}.getType();
         arr = gson.fromJson(savedJSON, type);
@@ -368,7 +346,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             arr = new ArrayList<JSONObject>();
             System.out.println("readJSON arr = " + arr.toString());
         }
-        System.out.println("after if arr = " + arr.toString() + " musicArr = " + musicArray.toString());
+        System.out.println("after if arr = " + arr.toString() + " moviesArr = " + moviesArray.toString());
         return arr;
     }
 
@@ -376,6 +354,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void getJSON() throws JSONException {
         url = setAsyncUrl();
+        System.out.println("after setAsyncUrl url = " + url);
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
                 .url(url)
@@ -423,7 +402,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
     public void setSearchName(String name) {
 
-        searchName = "&" + name;
+        searchName = "&q=" + name;
+        //System.out.println("searchName changing = " + searchName);
     }
 
     public void saveToJson(String name, String type) throws JSONException {
@@ -453,27 +433,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case "author":
                authorsArray.add(jObj);
                 if(V)System.out.println("authorsArray = " + authorsArray.toString());
-                saveJSON(type, "authorsFile", authorsArray);
+                saveJSON(type, AUTHORS_FILE, authorsArray);
                 break;
             case "movie":
                 moviesArray.add(jObj);
-                if(V)System.out.println("moviesArray = " + moviesArray.toString());
-                saveJSON(type, "moviesFile", moviesArray);
+                System.out.println("moviesArray = " + moviesArray.toString());
+                saveJSON(type, MOVIES_FILE, moviesArray);
                 break;
             case "show":
                 showsArray.add(jObj);
                 if(V)System.out.println("showsArray = " + showsArray.toString());
-                saveJSON(type, "showsFile", showsArray);
+                saveJSON(type, SHOWS_FILE, showsArray);
                 break;
             case "podcast":
                 podcastsArray.add(jObj);
                 if(V)System.out.println("podcastsArray = " + podcastsArray.toString());
-                saveJSON(type, "podcastsFile", podcastsArray);
+                saveJSON(type, PODCASTS_FILE, podcastsArray);
                 break;
             case "game":
                 gamesArray.add(jObj);
                 if(V)System.out.println("gamesArray = " + gamesArray.toString());
-                saveJSON(type, "gamesFile", gamesArray);
+                saveJSON(type, GAMES_FILE, gamesArray);
                 break;
         }
     }
