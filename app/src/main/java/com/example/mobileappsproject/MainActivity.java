@@ -153,13 +153,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_books:
 //                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
 //                        new MusicFragment()).commit();
-                booksArray = readJSON("books", BOOKS_FILE, booksArray);
+                booksArray = readJSON("book", BOOKS_FILE, booksArray);
+                System.out.println("music array before navigation = " + booksArray.toString());
                 addSavedFragment(booksArray);
                 break;
             case R.id.nav_authors:
 //                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
 //                        new MusicFragment()).commit();
                 authorsArray = readJSON("author", AUTHORS_FILE, authorsArray);
+                System.out.println("music array before navigation = " + authorsArray.toString());
                 addSavedFragment(authorsArray);
                 break;
             case R.id.nav_games:
@@ -243,8 +245,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     sDescription = json.getString(key);
                     key = keys.next();
                     sWiki = json.getString(key);
-                    key = keys.next();
-                    sYoutube = json.getString(key);
+                    if(keys.hasNext()){
+                        key = keys.next();
+                        sYoutube = json.getString(key);}
                     FRAGMENTS.add(DescriptionFragment.newInstance(sName, sType, sDescription, sWiki, sYoutube, addOrRemove));
                     fragsToInstantiate += 1;
                     break;
@@ -324,6 +327,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Gson gson = new Gson();
         String typeList = gson.toJson(arr);
         prefEditor.putString( myList, typeList );
+        System.out.println("saveJDON myList = " + myList);
         prefEditor.apply();
     }
 
@@ -340,7 +344,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             arr = new ArrayList<JSONObject>();
             System.out.println("readJSON arr = " + arr.toString());
         }
-        System.out.println("after if arr = " + arr.toString() + " moviesArr = " + moviesArray.toString());
         return arr;
     }
 
@@ -426,12 +429,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     booksArray.add(jObj);
                 }else {
                     booksArray.remove(jObj);
+                    addSavedFragment(booksArray);
                 }
                 if(V)System.out.println("booksArray = " + booksArray.toString());
-                saveJSON(type, "booksFile", booksArray);
-                Toast.makeText(this, toast,
-                        Toast.LENGTH_SHORT).show();
-                saveJSON(type, MUSIC_FILE, musicArray);
+                saveJSON(type, BOOKS_FILE, booksArray);
                 break;
             case "music":
                 if(saveOrDelete) {
@@ -441,8 +442,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     addSavedFragment(musicArray);
                 }
                     if(V)System.out.println("type = " + type + " musicArray = " + musicArray.toString());
-                Toast.makeText(this, toast,
-                        Toast.LENGTH_SHORT).show();
                     saveJSON(type, MUSIC_FILE, musicArray);
                     break;
             case "author":
@@ -454,9 +453,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                }
                     if(V)System.out.println("authorsArray = " + authorsArray.toString());
                 saveJSON(type, AUTHORS_FILE, authorsArray);
-                Toast.makeText(this, toast,
-                        Toast.LENGTH_SHORT).show();
-                saveJSON(type, MUSIC_FILE, musicArray);
                 break;
             case "movie":
                 if(saveOrDelete) {
@@ -467,8 +463,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     }
                     System.out.println("moviesArray = " + moviesArray.toString());
                 saveJSON(type, MOVIES_FILE, moviesArray);
-                Toast.makeText(this, toast,
-                        Toast.LENGTH_SHORT).show();
                 saveJSON(type, MUSIC_FILE, musicArray);
                 break;
             case "show":
@@ -480,9 +474,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
                     if(V)System.out.println("showsArray = " + showsArray.toString());
                 saveJSON(type, SHOWS_FILE, showsArray);
-                Toast.makeText(this, toast,
-                        Toast.LENGTH_SHORT).show();
-                saveJSON(type, MUSIC_FILE, musicArray);
                 break;
             case "podcast":
                 if(saveOrDelete) {
@@ -492,8 +483,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     addSavedFragment(podcastsArray);
                 }
                     if(V)System.out.println("podcastsArray = " + podcastsArray.toString());
-                Toast.makeText(this, toast,
-                        Toast.LENGTH_SHORT).show();
                 saveJSON(type, PODCASTS_FILE, podcastsArray);
                 break;
             case "game":
@@ -504,10 +493,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     addSavedFragment(gamesArray);
                 }
                     if(V)System.out.println("gamesArray = " + gamesArray.toString());
-                Toast.makeText(this, toast,
-                        Toast.LENGTH_SHORT).show();
                 saveJSON(type, GAMES_FILE, gamesArray);
                 break;
         }
+        Toast.makeText(this, toast,
+                Toast.LENGTH_SHORT).show();
     }
 }
