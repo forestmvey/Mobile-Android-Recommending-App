@@ -22,7 +22,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -323,13 +322,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         SharedPreferences sharedPreferences = getSharedPreferences(saveFile, MODE_PRIVATE);
         SharedPreferences.Editor prefEditor = sharedPreferences.edit();
         Gson gson = new Gson();
-        System.out.println("arr = " + arr.toString());
         String typeList = gson.toJson(arr);
-        System.out.println("typeList = " + typeList);
         prefEditor.putString( myList, typeList );
         prefEditor.apply();
-        System.out.println("Saving JSON myList = " + myList);
-        System.out.println("saving this item " + sharedPreferences.getString(myList, null));
     }
 
     private ArrayList<JSONObject> readJSON(String myList, String saveFile, ArrayList<JSONObject> arr) {
@@ -419,7 +414,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     public void saveJsonObject(JSONObject jObj, String type, boolean saveOrDelete) throws JSONException {
-
+        String toast;
+        if(saveOrDelete) {
+            toast = "Item Saved";
+        }else {
+            toast = "Item Removed!";
+        }
         switch(type) {
             case "book":
                 if(saveOrDelete) {
@@ -429,6 +429,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
                 if(V)System.out.println("booksArray = " + booksArray.toString());
                 saveJSON(type, "booksFile", booksArray);
+                Toast.makeText(this, toast,
+                        Toast.LENGTH_SHORT).show();
+                saveJSON(type, MUSIC_FILE, musicArray);
                 break;
             case "music":
                 if(saveOrDelete) {
@@ -438,6 +441,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     addSavedFragment(musicArray);
                 }
                     if(V)System.out.println("type = " + type + " musicArray = " + musicArray.toString());
+                Toast.makeText(this, toast,
+                        Toast.LENGTH_SHORT).show();
                     saveJSON(type, MUSIC_FILE, musicArray);
                     break;
             case "author":
@@ -449,6 +454,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                }
                     if(V)System.out.println("authorsArray = " + authorsArray.toString());
                 saveJSON(type, AUTHORS_FILE, authorsArray);
+                Toast.makeText(this, toast,
+                        Toast.LENGTH_SHORT).show();
+                saveJSON(type, MUSIC_FILE, musicArray);
                 break;
             case "movie":
                 if(saveOrDelete) {
@@ -459,6 +467,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     }
                     System.out.println("moviesArray = " + moviesArray.toString());
                 saveJSON(type, MOVIES_FILE, moviesArray);
+                Toast.makeText(this, toast,
+                        Toast.LENGTH_SHORT).show();
+                saveJSON(type, MUSIC_FILE, musicArray);
                 break;
             case "show":
                 if(saveOrDelete) {
@@ -469,6 +480,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
                     if(V)System.out.println("showsArray = " + showsArray.toString());
                 saveJSON(type, SHOWS_FILE, showsArray);
+                Toast.makeText(this, toast,
+                        Toast.LENGTH_SHORT).show();
+                saveJSON(type, MUSIC_FILE, musicArray);
                 break;
             case "podcast":
                 if(saveOrDelete) {
@@ -478,6 +492,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     addSavedFragment(podcastsArray);
                 }
                     if(V)System.out.println("podcastsArray = " + podcastsArray.toString());
+                Toast.makeText(this, toast,
+                        Toast.LENGTH_SHORT).show();
                 saveJSON(type, PODCASTS_FILE, podcastsArray);
                 break;
             case "game":
@@ -488,6 +504,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     addSavedFragment(gamesArray);
                 }
                     if(V)System.out.println("gamesArray = " + gamesArray.toString());
+                Toast.makeText(this, toast,
+                        Toast.LENGTH_SHORT).show();
                 saveJSON(type, GAMES_FILE, gamesArray);
                 break;
         }

@@ -44,7 +44,6 @@ public class DescriptionFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 try {
-                        //System.out.println(name.getText().toString());
                         ((MainActivity) getActivity()).saveToJson(name.getText().toString(), type.getText().toString(), getArguments().getBoolean("addOrRemove"));
                     } catch (JSONException e) {
                     e.printStackTrace();
