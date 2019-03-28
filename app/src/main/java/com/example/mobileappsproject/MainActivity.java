@@ -400,7 +400,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void setSearchName(String name) {
 
         searchName = "&q=" + name;
-        //System.out.println("searchName changing = " + searchName);
+        System.out.println("searchName changing = " + searchName);
     }
 
     public void saveToJson(String name, String type, boolean saveOrDelete) throws JSONException {
