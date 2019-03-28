@@ -29,20 +29,24 @@ public class DescriptionFragment extends Fragment {
         wiki = (TextView)v.findViewById(R.id.descriptionWiki);
         youtube = (TextView)v.findViewById(R.id.descriptionYoutube);
         Button saveItem = (Button)v.findViewById(R.id.addDescripButt);
+        Button addOrRemove = (Button)v.findViewById(R.id.addDescripButt);
 
         name.setText(getArguments().getString("name"));
         type.setText(getArguments().getString("type"));
         description.setText(getArguments().getString("description"));
         wiki.setText(getArguments().getString("wiki"));
         youtube.setText(getArguments().getString("youtube"));
+        if(!getArguments().getBoolean("addOrRemove")){
+            addOrRemove.setText("Remove");
+        }
 
         saveItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
-                    System.out.println(name.getText().toString());
-                    ((MainActivity)getActivity()).saveToJson(name.getText().toString(), type.getText().toString());
-                } catch (JSONException e) {
+                        //System.out.println(name.getText().toString());
+                        ((MainActivity) getActivity()).saveToJson(name.getText().toString(), type.getText().toString(), getArguments().getBoolean("addOrRemove"));
+                    } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
@@ -52,7 +56,7 @@ public class DescriptionFragment extends Fragment {
     }
 
 
-    public static DescriptionFragment newInstance(String name, String type, String description,String wiki, String youtube) {
+    public static DescriptionFragment newInstance(String name, String type, String description,String wiki, String youtube, boolean addOrRemove) {
         DescriptionFragment frag = new DescriptionFragment();
         Bundle args = new Bundle();
         args.putString("name", name);
@@ -60,6 +64,7 @@ public class DescriptionFragment extends Fragment {
         args.putString("description", description);
         args.putString("wiki", wiki);
         args.putString("youtube", youtube);
+        args.putBoolean("addOrRemove", addOrRemove);
         frag.setArguments(args);
         return frag;
     }
