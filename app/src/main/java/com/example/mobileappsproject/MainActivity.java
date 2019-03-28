@@ -99,8 +99,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         booksArray = new ArrayList<JSONObject>();
         gamesArray = new ArrayList<JSONObject>();
         podcastsArray = new ArrayList<JSONObject>();
-        //musicArray = readJSON("music", MUSIC_FILE, musicArray);
-        //System.out.println("booksArray after readJSON = " + musicArray.toString());
 
 
         typesObj = new JSONObject();
@@ -202,7 +200,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             System.out.println("the string is = " + x.toString());
             jArr.put(x);
         }
-        addFragments(jArr);
+        addFragments(jArr, false);
     }
 
     public void addSearchFragment(String jString) throws JSONException {
@@ -219,10 +217,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         if(V)System.out.println("jArr = " + jArr.toString());
-        addFragments(jArr);
+        addFragments(jArr, true);
         }
 
-        private void addFragments(JSONArray jArr) throws JSONException {
+        private void addFragments(JSONArray jArr, boolean addOrRemove) throws JSONException {
             fragsToInstantiate = 0;
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -248,7 +246,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     sWiki = json.getString(key);
                     key = keys.next();
                     sYoutube = json.getString(key);
-                    FRAGMENTS.add(DescriptionFragment.newInstance(sName, sType, sDescription, sWiki, sYoutube));
+                    FRAGMENTS.add(DescriptionFragment.newInstance(sName, sType, sDescription, sWiki, sYoutube, addOrRemove));
                     fragsToInstantiate += 1;
                     break;
                 }
@@ -327,6 +325,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Gson gson = new Gson();
         System.out.println("arr = " + arr.toString());
         String typeList = gson.toJson(arr);
+        System.out.println("typeList = " + typeList);
         prefEditor.putString( myList, typeList );
         prefEditor.apply();
         System.out.println("Saving JSON myList = " + myList);
@@ -406,53 +405,89 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //System.out.println("searchName changing = " + searchName);
     }
 
-    public void saveToJson(String name, String type) throws JSONException {
+    public void saveToJson(String name, String type, boolean saveOrDelete) throws JSONException {
         System.out.println("name = " + name + " type = " + type);
         JSONObject jObj;
         for(int i = 0; i < jArr.length(); i++) {
             jObj = jArr.getJSONObject(i);
             if(jObj.getString("Name").equals(name) && jObj.getString("Type").equals(type)){
                 System.out.println("saving object");
-                saveJsonObject(jArr.getJSONObject(i), type);
-            }
+                saveJsonObject(jArr.getJSONObject(i), type, saveOrDelete);
+                }
         }
     }
-    public void saveJsonObject(JSONObject jObj, String type) {
+
+
+    public void saveJsonObject(JSONObject jObj, String type, boolean saveOrDelete) throws JSONException {
 
         switch(type) {
             case "book":
-                booksArray.add(jObj);
+                if(saveOrDelete) {
+                    booksArray.add(jObj);
+                }else {
+                    booksArray.remove(jObj);
+                }
                 if(V)System.out.println("booksArray = " + booksArray.toString());
                 saveJSON(type, "booksFile", booksArray);
                 break;
             case "music":
-                musicArray.add(jObj);
-                if(V)System.out.println("type = " + type + " musicArray = " + musicArray.toString());
-                saveJSON(type, MUSIC_FILE, musicArray);
-                break;
+                if(saveOrDelete) {
+                    musicArray.add(jObj);
+                } else {
+                    musicArray.remove(jObj);
+                    addSavedFragment(musicArray);
+                }
+                    if(V)System.out.println("type = " + type + " musicArray = " + musicArray.toString());
+                    saveJSON(type, MUSIC_FILE, musicArray);
+                    break;
             case "author":
-               authorsArray.add(jObj);
-                if(V)System.out.println("authorsArray = " + authorsArray.toString());
+               if(saveOrDelete) {
+                   authorsArray.add(jObj);
+               }else{
+                   authorsArray.remove(jObj);
+                   addSavedFragment(authorsArray);
+               }
+                    if(V)System.out.println("authorsArray = " + authorsArray.toString());
                 saveJSON(type, AUTHORS_FILE, authorsArray);
                 break;
             case "movie":
-                moviesArray.add(jObj);
-                System.out.println("moviesArray = " + moviesArray.toString());
+                if(saveOrDelete) {
+                    moviesArray.add(jObj);
+                }else {
+                    moviesArray.remove(jObj);
+                    addSavedFragment(moviesArray);
+                    }
+                    System.out.println("moviesArray = " + moviesArray.toString());
                 saveJSON(type, MOVIES_FILE, moviesArray);
                 break;
             case "show":
-                showsArray.add(jObj);
-                if(V)System.out.println("showsArray = " + showsArray.toString());
+                if(saveOrDelete) {
+                    showsArray.add(jObj);
+                }else{
+                    showsArray.remove(jObj);
+                    addSavedFragment(showsArray);
+                }
+                    if(V)System.out.println("showsArray = " + showsArray.toString());
                 saveJSON(type, SHOWS_FILE, showsArray);
                 break;
             case "podcast":
-                podcastsArray.add(jObj);
-                if(V)System.out.println("podcastsArray = " + podcastsArray.toString());
+                if(saveOrDelete) {
+                    podcastsArray.add(jObj);
+                }else {
+                    podcastsArray.remove(jObj);
+                    addSavedFragment(podcastsArray);
+                }
+                    if(V)System.out.println("podcastsArray = " + podcastsArray.toString());
                 saveJSON(type, PODCASTS_FILE, podcastsArray);
                 break;
             case "game":
-                gamesArray.add(jObj);
-                if(V)System.out.println("gamesArray = " + gamesArray.toString());
+                if(saveOrDelete) {
+                    gamesArray.add(jObj);
+                }else{
+                    gamesArray.remove(jObj);
+                    addSavedFragment(gamesArray);
+                }
+                    if(V)System.out.println("gamesArray = " + gamesArray.toString());
                 saveJSON(type, GAMES_FILE, gamesArray);
                 break;
         }
