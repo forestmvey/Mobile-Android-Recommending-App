@@ -18,7 +18,7 @@
         android:layout_marginRight="75dp"
         android:layout_marginBottom="16dp"
         android:gravity="center"
-        android:text="search fragment"
+        android:text="search"
         android:textSize="35sp"
         app:layout_constraintBottom_toTopOf="@+id/recommendationText"
         app:layout_constraintEnd_toEndOf="parent"
@@ -86,10 +86,12 @@
         android:id="@+id/booksCheckBox"
         android:layout_width="80dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
         android:text="Books"
         app:layout_constraintBaseline_toBaselineOf="@+id/gamesCheckBox"
         app:layout_constraintEnd_toStartOf="@+id/gamesCheckBox"
-        app:layout_constraintStart_toEndOf="@+id/infoCheckBox" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <CheckBox
         android:id="@+id/podcastsCheckBox"
@@ -151,17 +153,6 @@
         app:layout_constraintStart_toEndOf="@+id/booksCheckBox"
         app:layout_constraintTop_toBottomOf="@+id/moviesCheckBox"
         app:layout_constraintVertical_bias="0.024" />
-
-    <CheckBox
-        android:id="@+id/infoCheckBox"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:text="Extra Info"
-        app:layout_constraintBaseline_toBaselineOf="@+id/gamesCheckBox"
-        app:layout_constraintEnd_toStartOf="@+id/booksCheckBox"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <android.support.constraint.Barrier
         android:id="@+id/barrier"
