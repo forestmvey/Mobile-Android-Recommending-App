@@ -1,5 +1,4 @@
 package com.example.mobileappsproject;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
@@ -14,10 +13,8 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.Toast;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,7 +22,6 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Iterator;
-
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -67,6 +63,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ArrayList<JSONObject> podcastsArray;
     private ArrayList<JSONObject> gamesArray;
 
+    // set verbose level
     private boolean VV = false;
     private boolean V = false;
 
@@ -91,6 +88,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        // instantiate all Arraylists  to contain saved frgments
         musicArray = new ArrayList<JSONObject>();
         moviesArray = new ArrayList<JSONObject>();
         showsArray = new ArrayList<JSONObject>();
@@ -99,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         gamesArray = new ArrayList<JSONObject>();
         podcastsArray = new ArrayList<JSONObject>();
 
-
+        // update all of the types in object to set the url GET reqeust parameters
         typesObj = new JSONObject();
         typesCheckList = new ArrayList<>();
         try {
@@ -121,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             navigationView.setCheckedItem(R.id.nav_search);
         }
         }
-
+    // Select navigation page
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item){
         try {
@@ -131,49 +129,37 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         new SearchFragment()).commit();
                 break;
             case R.id.nav_movies:
-//                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-//                        new MovieFragment()).commit();
                 moviesArray = readJSON("movie", MOVIES_FILE, moviesArray);
-                System.out.println("movies array before navigation = " + moviesArray.toString());
+                if(V)System.out.println("movies array before navigation = " + moviesArray.toString());
                 addSavedFragment(moviesArray);
                 break;
             case R.id.nav_music:
-//                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-//                        new MusicFragment()).commit();
                 musicArray = readJSON("music", MUSIC_FILE, musicArray);
-                if(V)System.out.println("music array before navigation = " + musicArray.toString());
+                if(V)if(V)System.out.println("music array before navigation = " + musicArray.toString());
                 addSavedFragment(musicArray);
                 break;
             case R.id.nav_shows:
-//                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-//                        new MusicFragment()).commit();
                 showsArray = readJSON("show", SHOWS_FILE, showsArray);
                 addSavedFragment(showsArray);
                 break;
             case R.id.nav_books:
-//                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-//                        new MusicFragment()).commit();
                 booksArray = readJSON("book", BOOKS_FILE, booksArray);
-                System.out.println("music array before navigation = " + booksArray.toString());
+                if(V)System.out.println("music array before navigation = " + booksArray.toString());
                 addSavedFragment(booksArray);
                 break;
             case R.id.nav_authors:
-//                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-//                        new MusicFragment()).commit();
                 authorsArray = readJSON("author", AUTHORS_FILE, authorsArray);
-                System.out.println("music array before navigation = " + authorsArray.toString());
+                if(V)System.out.println("music array before navigation = " + authorsArray.toString());
                 addSavedFragment(authorsArray);
                 break;
             case R.id.nav_games:
-//                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-//                        new MusicFragment()).commit();
                 gamesArray = readJSON("game", GAMES_FILE, gamesArray);
+                if(V)System.out.println("games array before navigation = " + gamesArray.toString());
                 addSavedFragment(gamesArray);
                 break;
             case R.id.nav_podcasts:
-//                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-//                        new MusicFragment()).commit();
                 podcastsArray = readJSON("podcast", PODCASTS_FILE, podcastsArray);
+                if(V)System.out.println("podcasts array before navigation = " + podcastsArray.toString());
                 addSavedFragment(podcastsArray);
                 break;
         }
@@ -193,6 +179,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+
     public void addSavedFragment(ArrayList<JSONObject> myList) throws JSONException {
 
         jArr = new JSONArray();
@@ -203,6 +190,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         addFragments(jArr, false);
     }
+
 
     public void addSearchFragment(String jString) throws JSONException {
 
@@ -221,6 +209,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         addFragments(jArr, true);
         }
 
+
+        // Adds json items to fragments and adds fragment to the fragment manager
+        // to display fragments of type on navigation
         private void addFragments(JSONArray jArr, boolean addOrRemove) throws JSONException {
             fragsToInstantiate = 0;
             FragmentManager fragmentManager = getSupportFragmentManager();
@@ -230,6 +221,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             ArrayList<DescriptionFragment> FRAGMENTS = new ArrayList<>();
 
+            // iterate through all retrieved data to add object values into fragment
             for (int i = 0; i < jArr.length(); i++) {
                 JSONObject json = jArr.getJSONObject(i);
                 Iterator<String> keys = json.keys();
@@ -254,6 +246,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
         }
 
+            // Iterate through retrieved fragments and add fragments into fragment manager
+            // API returns a maximum 20 items
         for(int i = 0; i < fragsToInstantiate; i++) {
             switch(i){
                 case 0:
@@ -321,16 +315,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fragmentTransaction.commit();
     }
 
-    private void saveJSON(String myList, String saveFile, ArrayList<JSONObject> arr) {
-        SharedPreferences sharedPreferences = getSharedPreferences(saveFile, MODE_PRIVATE);
-        SharedPreferences.Editor prefEditor = sharedPreferences.edit();
-        Gson gson = new Gson();
-        String typeList = gson.toJson(arr);
-        prefEditor.putString( myList, typeList );
-        System.out.println("saveJDON myList = " + myList);
-        prefEditor.apply();
-    }
 
+    // readJson saved JSON from sharedPreferences, and add to array list
     private ArrayList<JSONObject> readJSON(String myList, String saveFile, ArrayList<JSONObject> arr) {
         SharedPreferences prefs = getSharedPreferences(saveFile, Context.MODE_PRIVATE);
         String savedJSON = prefs.getString(myList, null);
@@ -348,7 +334,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-
+    // retrieve JSON from URL GET request
     public void getJSON() throws JSONException {
         url = setAsyncUrl();
         System.out.println("after setAsyncUrl url = " + url);
@@ -377,6 +363,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
+    // Change url parameters when checkbox typelist is checked
     public void setTypeList(String type, boolean checkOrNo) {
         if(checkOrNo){
             typesCheckList.add(type);
@@ -387,6 +374,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    // set URL for GET request
     public String setAsyncUrl() throws JSONException {
         url = baseUrl + searchName;
         for(int i = 0; i < typesCheckList.size(); i++) {
@@ -397,12 +385,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if(V)System.out.println(url);
         return url;
     }
+
+    // Set the search name for the URL GET request
     public void setSearchName(String name) {
 
         searchName = "&q=" + name;
         System.out.println("searchName changing = " + searchName);
     }
 
+    // Iterate through Array to either save object in array to memory
+    // or delete object from memory
     public void saveToJson(String name, String type, boolean saveOrDelete) throws JSONException {
         System.out.println("name = " + name + " type = " + type);
         JSONObject jObj;
@@ -415,7 +407,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-
+    // Save or Delete object from local memory
     public void saveJsonObject(JSONObject jObj, String type, boolean saveOrDelete) throws JSONException {
         String toast;
         if(saveOrDelete) {
@@ -498,5 +490,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         Toast.makeText(this, toast,
                 Toast.LENGTH_SHORT).show();
+    }
+
+    // Save JSON object to sharedPreferences
+    private void saveJSON(String myList, String saveFile, ArrayList<JSONObject> arr) {
+        SharedPreferences sharedPreferences = getSharedPreferences(saveFile, MODE_PRIVATE);
+        SharedPreferences.Editor prefEditor = sharedPreferences.edit();
+        Gson gson = new Gson();
+        String typeList = gson.toJson(arr);
+        prefEditor.putString( myList, typeList );
+        System.out.println("saveJDON myList = " + myList);
+        prefEditor.apply();
     }
 }
