@@ -42,6 +42,7 @@ public class SearchFragment extends Fragment {
         gameCheck = (CheckBox) v.findViewById(R.id.gamesCheckBox);
         searchName = (TextView) v.findViewById(R.id.recommendationText);
 
+        // when checkbox clicked set the URL parameter
         movieCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -117,6 +118,8 @@ public class SearchFragment extends Fragment {
 
         return v;
     }
+
+    // Set the URL parameter when checkbox checked/unchecked
     private void setTypesCheckList(String toSet, CheckBox box){
         ((MainActivity)getActivity()).setTypeList(toSet, (box.isChecked()));
     }

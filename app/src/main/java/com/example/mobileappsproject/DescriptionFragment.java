@@ -40,6 +40,7 @@ public class DescriptionFragment extends Fragment {
             addOrRemove.setText("Remove");
         }
 
+        // Save or delete a JSON item to memory
         saveItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -54,7 +55,7 @@ public class DescriptionFragment extends Fragment {
         return v;
     }
 
-
+    // Create a new instance to set arguments from retrieved json
     public static DescriptionFragment newInstance(String name, String type, String description,String wiki, String youtube, boolean addOrRemove) {
         DescriptionFragment frag = new DescriptionFragment();
         Bundle args = new Bundle();
