@@ -28,7 +28,6 @@ public class DescriptionFragment extends Fragment {
         description = (TextView)v.findViewById(R.id.descriptionDescription);
         wiki = (TextView)v.findViewById(R.id.descriptionWiki);
         youtube = (TextView)v.findViewById(R.id.descriptionYoutube);
-        Button saveItem = (Button)v.findViewById(R.id.addDescripButt);
         Button addOrRemove = (Button)v.findViewById(R.id.addDescripButt);
 
         name.setText(getArguments().getString("name"));
@@ -36,12 +35,21 @@ public class DescriptionFragment extends Fragment {
         description.setText(getArguments().getString("description"));
         wiki.setText(getArguments().getString("wiki"));
         youtube.setText(getArguments().getString("youtube"));
+
+        // if returning search fragment or saved fragment change button name
         if(!getArguments().getBoolean("addOrRemove")){
             addOrRemove.setText("Remove");
         }
 
-        // Save or delete a JSON item in memory
-        saveItem.setOnClickListener(new View.OnClickListener() {
+
+        // If no items returned remove button
+        if(type.getText().equals("")){
+            addOrRemove.setVisibility(v.GONE);
+        }
+
+
+        // Save or delete a JSON item
+        addOrRemove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
