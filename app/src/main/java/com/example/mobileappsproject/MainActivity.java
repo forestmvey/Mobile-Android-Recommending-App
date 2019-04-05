@@ -248,7 +248,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
         }
 
-
+            if(fragsToInstantiate == 0){
+                FRAGMENTS.add(DescriptionFragment.newInstance("", "", "No Items Returned", "", "", addOrRemove));
+                fragmentTransaction.add(R.id.item0, FRAGMENTS.get(0));
+            }
             // Iterate through retrieved fragments and add fragments into fragment manager
             // API returns a maximum 20 items
         for(int i = 0; i < fragsToInstantiate; i++) {
@@ -399,15 +402,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     // Iterate through Array to either save object in array to memory
     // or delete object from memory
     public void saveOrDeleteJson(String name, String type, boolean saveOrDelete) throws JSONException {
-        System.out.println("name = " + name + " type = " + type);
-        JSONObject jObj;
-        for(int i = 0; i < jArr.length(); i++) {
-            jObj = jArr.getJSONObject(i);
-            if(jObj.getString("Name").equals(name) && jObj.getString("Type").equals(type)){
-                System.out.println("saving object");
-                saveJsonObject(jArr.getJSONObject(i), type, saveOrDelete);
+
+            System.out.println("name = " + name + " type = " + type);
+            JSONObject jObj;
+            for (int i = 0; i < jArr.length(); i++) {
+                jObj = jArr.getJSONObject(i);
+                if (jObj.getString("Name").equals(name) && jObj.getString("Type").equals(type)) {
+                    System.out.println("saving object");
+                    saveJsonObject(jArr.getJSONObject(i), type, saveOrDelete);
                 }
-        }
+            }
+
     }
 
     // Save or Delete object from local memory
