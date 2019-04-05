@@ -119,7 +119,7 @@ public class SearchFragment extends Fragment {
         return v;
     }
 
-    // Set the URL parameter when checkbox checked/unchecked
+    // Set the URL parameter when checkbox checked/unchecked for GET request
     private void setTypesCheckList(String toSet, CheckBox box){
         ((MainActivity)getActivity()).setTypeList(toSet, (box.isChecked()));
     }

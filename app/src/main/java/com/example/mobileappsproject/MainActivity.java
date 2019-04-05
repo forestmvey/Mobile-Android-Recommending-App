@@ -129,36 +129,36 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         new SearchFragment()).commit();
                 break;
             case R.id.nav_movies:
-                moviesArray = readJSON("movie", MOVIES_FILE, moviesArray);
+                moviesArray = readJSONFromMemory("movie", MOVIES_FILE, moviesArray);
                 if(V)System.out.println("movies array before navigation = " + moviesArray.toString());
                 addSavedFragment(moviesArray);
                 break;
             case R.id.nav_music:
-                musicArray = readJSON("music", MUSIC_FILE, musicArray);
+                musicArray = readJSONFromMemory("music", MUSIC_FILE, musicArray);
                 if(V)if(V)System.out.println("music array before navigation = " + musicArray.toString());
                 addSavedFragment(musicArray);
                 break;
             case R.id.nav_shows:
-                showsArray = readJSON("show", SHOWS_FILE, showsArray);
+                showsArray = readJSONFromMemory("show", SHOWS_FILE, showsArray);
                 addSavedFragment(showsArray);
                 break;
             case R.id.nav_books:
-                booksArray = readJSON("book", BOOKS_FILE, booksArray);
+                booksArray = readJSONFromMemory("book", BOOKS_FILE, booksArray);
                 if(V)System.out.println("music array before navigation = " + booksArray.toString());
                 addSavedFragment(booksArray);
                 break;
             case R.id.nav_authors:
-                authorsArray = readJSON("author", AUTHORS_FILE, authorsArray);
+                authorsArray = readJSONFromMemory("author", AUTHORS_FILE, authorsArray);
                 if(V)System.out.println("music array before navigation = " + authorsArray.toString());
                 addSavedFragment(authorsArray);
                 break;
             case R.id.nav_games:
-                gamesArray = readJSON("game", GAMES_FILE, gamesArray);
+                gamesArray = readJSONFromMemory("game", GAMES_FILE, gamesArray);
                 if(V)System.out.println("games array before navigation = " + gamesArray.toString());
                 addSavedFragment(gamesArray);
                 break;
             case R.id.nav_podcasts:
-                podcastsArray = readJSON("podcast", PODCASTS_FILE, podcastsArray);
+                podcastsArray = readJSONFromMemory("podcast", PODCASTS_FILE, podcastsArray);
                 if(V)System.out.println("podcasts array before navigation = " + podcastsArray.toString());
                 addSavedFragment(podcastsArray);
                 break;
@@ -179,7 +179,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-
+    // prepare JSON array of saved objects to be added to fragments
     public void addSavedFragment(ArrayList<JSONObject> myList) throws JSONException {
 
         jArr = new JSONArray();
@@ -189,9 +189,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             jArr.put(x);
         }
         addFragments(jArr, false);
+
     }
 
-
+    // prepare JSON string to be added to fragments
     public void addSearchFragment(String jString) throws JSONException {
 
         jObj = new JSONObject(jString)
@@ -221,6 +222,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             ArrayList<DescriptionFragment> FRAGMENTS = new ArrayList<>();
 
+
             // iterate through all retrieved data to add object values into fragment
             for (int i = 0; i < jArr.length(); i++) {
                 JSONObject json = jArr.getJSONObject(i);
@@ -245,6 +247,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     break;
                 }
         }
+
 
             // Iterate through retrieved fragments and add fragments into fragment manager
             // API returns a maximum 20 items
@@ -316,8 +319,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-    // readJson saved JSON from sharedPreferences, and add to array list
-    private ArrayList<JSONObject> readJSON(String myList, String saveFile, ArrayList<JSONObject> arr) {
+    // read saved JSON from sharedPreferences, and add to array list
+    private ArrayList<JSONObject> readJSONFromMemory(String myList, String saveFile, ArrayList<JSONObject> arr) {
         SharedPreferences prefs = getSharedPreferences(saveFile, Context.MODE_PRIVATE);
         String savedJSON = prefs.getString(myList, null);
         System.out.println("reading these items " + savedJSON + "myList = " + myList);
@@ -336,7 +339,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     // retrieve JSON from URL GET request
     public void getJSON() throws JSONException {
-        url = setAsyncUrl();
+        url = setUrl();
         System.out.println("after setAsyncUrl url = " + url);
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
@@ -375,7 +378,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     // set URL for GET request
-    public String setAsyncUrl() throws JSONException {
+    public String setUrl() throws JSONException {
         url = baseUrl + searchName;
         for(int i = 0; i < typesCheckList.size(); i++) {
             if(typesObj.has(typesCheckList.get(i))){
@@ -395,7 +398,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     // Iterate through Array to either save object in array to memory
     // or delete object from memory
-    public void saveToJson(String name, String type, boolean saveOrDelete) throws JSONException {
+    public void saveOrDeleteJson(String name, String type, boolean saveOrDelete) throws JSONException {
         System.out.println("name = " + name + " type = " + type);
         JSONObject jObj;
         for(int i = 0; i < jArr.length(); i++) {
