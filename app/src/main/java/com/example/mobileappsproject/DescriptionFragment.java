@@ -11,7 +11,9 @@ import android.widget.TextView;
 
 import org.json.JSONException;
 
-
+/**
+ * fragment class used to describe each item retrieved from api, or from memory
+ */
 public class DescriptionFragment extends Fragment {
     private TextView name;
     private TextView type;
@@ -36,19 +38,26 @@ public class DescriptionFragment extends Fragment {
         wiki.setText(getArguments().getString("wiki"));
         youtube.setText(getArguments().getString("youtube"));
 
-        // if returning search fragment or saved fragment change button name
+        /**
+         * if returning search fragment or saved fragment change button name
+         */
         if(!getArguments().getBoolean("addOrRemove")){
             addOrRemove.setText("Remove");
         }
 
 
-        // If no items returned remove button
+        /**
+         * If no items returned remove button
+         */
         if(type.getText().equals("")){
             addOrRemove.setVisibility(v.GONE);
         }
 
 
-        // Save or delete a JSON item
+
+        /**
+         * Save or delete a JSON item
+         */
         addOrRemove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,7 +72,17 @@ public class DescriptionFragment extends Fragment {
         return v;
     }
 
-    // Create a new instance to set arguments from retrieved json data
+
+    /**
+     * Create a new instance to set arguments from retrieved json data
+     * @param name - Name to be added to fragment
+     * @param type - type to be added to fragment
+     * @param description - of fragment item
+     * @param wiki - link to wiki page
+     * @param youtube - link to youtube page
+     * @param addOrRemove - add or remove button to be added if saved to file or if retrieved from api
+     * @return - fragment with access to arg variables
+     */
     public static DescriptionFragment newInstance(String name, String type, String description,String wiki, String youtube, boolean addOrRemove) {
         DescriptionFragment frag = new DescriptionFragment();
         Bundle args = new Bundle();

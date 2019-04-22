@@ -28,6 +28,12 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
+
+/**
+ * Main activity handles a fragment manager to add fragments to user view
+ * Saves json to disk to be loaded into fragments
+ * and retrieves json from an api to load into fragments
+ */
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawer;
 
@@ -63,7 +69,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ArrayList<JSONObject> podcastsArray;
     private ArrayList<JSONObject> gamesArray;
 
-    // set verbose level
+
+    /**
+     * set verbose level
+     */
     private boolean VV = false;
     private boolean V = false;
 
@@ -88,7 +97,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        // instantiate all Arraylists  to contain saved frgments
+
+        /**
+         * instantiate all Arraylists  to contain saved frgments
+         */
         musicArray = new ArrayList<JSONObject>();
         moviesArray = new ArrayList<JSONObject>();
         showsArray = new ArrayList<JSONObject>();
@@ -97,7 +109,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         gamesArray = new ArrayList<JSONObject>();
         podcastsArray = new ArrayList<JSONObject>();
 
-        // update all of the types in object to set the url GET reqeust parameters
+
+        /**
+         * update all of the types in object to set the url GET reqeust parameters
+         */
         typesObj = new JSONObject();
         typesCheckList = new ArrayList<>();
         try {
@@ -119,7 +134,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             navigationView.setCheckedItem(R.id.nav_search);
         }
         }
-    // Select navigation page
+
+
+    /**
+     * Select navigation page
+     * @param item - navigation item selected
+     * @return
+     */
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item){
         try {
@@ -170,6 +191,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     return true;
     }
 
+    /**
+     *  On back pressed it will return to old navigation page
+     */
     @Override
     public void onBackPressed(){
         if(drawer.isDrawerOpen((GravityCompat.START))) {
@@ -179,7 +203,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    // prepare JSON array of saved objects to be added to fragments
+
+    /**
+     * prepare JSON array of saved objects to be added to fragments
+     * @param myList, list of json objects of types movies, books, authors etc...
+     * @throws JSONException
+     */
     public void addSavedFragment(ArrayList<JSONObject> myList) throws JSONException {
 
         jArr = new JSONArray();
@@ -192,7 +221,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-    // prepare JSON string to be added to fragments
+    /**
+     * add JSON items to jsonarray to be prepared for adding fragments
+     * @param jString - JSON string of objects to be added to fragments
+     * @throws JSONException
+     */
     public void addSearchFragment(String jString) throws JSONException {
 
         jObj = new JSONObject(jString)
@@ -211,8 +244,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
 
-        // Adds json items to fragments and adds fragment to the fragment manager
-        // to display fragments of type on navigation
+    /**
+     * Adds json items to fragments and adds fragment to the fragment manager
+     * to display fragments of type on navigation
+     * @param jArr - JSON array of objects to be added to fragment manager to be displayed as saved items or new items
+     * @param addOrRemove - boolean to display add or remove button
+     * @throws JSONException
+     */
         private void addFragments(JSONArray jArr, boolean addOrRemove) throws JSONException {
             fragsToInstantiate = 0;
             FragmentManager fragmentManager = getSupportFragmentManager();
@@ -252,8 +290,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 FRAGMENTS.add(DescriptionFragment.newInstance("", "", "No Items Returned", "", "", addOrRemove));
                 fragmentTransaction.add(R.id.item0, FRAGMENTS.get(0));
             }
-            // Iterate through retrieved fragments and add fragments into fragment manager
-            // API returns a maximum 20 items
+
+            /**
+             * Iterate through retrieved fragments and add fragments into fragment manager
+             * API returns a maximum 20 items
+             */
         for(int i = 0; i < fragsToInstantiate; i++) {
             switch(i){
                 case 0:
@@ -322,7 +363,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-    // read saved JSON from sharedPreferences, and add to array list
+    /**
+     * read saved JSON from sharedPreferences, and add to array list
+     * @param myList - type of objects to be retrieved from shared preferences
+     * @param saveFile - file saved in shared preferences
+     * @param arr - arraylist to assign all retrieved items to
+     * @return arraylist of saved json objects
+     */
     private ArrayList<JSONObject> readJSONFromMemory(String myList, String saveFile, ArrayList<JSONObject> arr) {
         SharedPreferences prefs = getSharedPreferences(saveFile, Context.MODE_PRIVATE);
         String savedJSON = prefs.getString(myList, null);
@@ -340,7 +387,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-    // retrieve JSON from URL GET request
+    /**
+     *retrieve JSON from URL GET request
+     * @throws JSONException
+     */
     public void getJSON() throws JSONException {
         url = setUrl();
         System.out.println("after setAsyncUrl url = " + url);
@@ -360,7 +410,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     jString = new String(response.body().string());
                     if(V)System.out.println("jString = " + jString);
                     try {
-                        addSearchFragment(jString);
+                        addSearchFragment(jString); // add retrieved search fragments to screen
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -369,7 +419,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
-    // Change url parameters when checkbox typelist is checked
+    /**
+     * Change url parameters when checkbox typelist is checked
+     * @param type - checkbox type checked
+     * @param checkOrNo - boolean to tell if to remove or add to string
+     */
     public void setTypeList(String type, boolean checkOrNo) {
         if(checkOrNo){
             typesCheckList.add(type);
@@ -380,7 +434,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    // set URL for GET request
+
+    /**
+     * set URL for GET request
+     * @return - returns url with updated search name
+     * @throws JSONException
+     */
     public String setUrl() throws JSONException {
         url = baseUrl + searchName;
         for(int i = 0; i < typesCheckList.size(); i++) {
@@ -392,15 +451,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return url;
     }
 
-    // Set the search name for the URL GET request
+
+    /**
+     * Set the search name for the URL GET request
+     * @param name - on change method updates name when string inputted for search
+     */
     public void setSearchName(String name) {
 
         searchName = "&q=" + name;
         System.out.println("searchName changing = " + searchName);
     }
 
-    // Iterate through Array to either save object in array to memory
-    // or delete object from memory
+
+    /**
+     * Iterate through Array to either save object in array to memory
+     * or delete object from memory
+     * @param name - name in object retrieved
+     * @param type - type in object retrieved
+     * @param saveOrDelete - boolean to display add or remove buttons for functionality
+     * @throws JSONException
+     */
     public void saveOrDeleteJson(String name, String type, boolean saveOrDelete) throws JSONException {
 
             System.out.println("name = " + name + " type = " + type);
@@ -415,7 +485,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-    // Save or Delete object from local memory
+
+    /**
+     * Save or Delete object from local memory
+     * @param jObj - JSON object to be saved or removed
+     * @param type - type of the json object ie. book, music ...
+     * @param saveOrDelete - delete or save the json object in memory
+     * @throws JSONException
+     */
     public void saveJsonObject(JSONObject jObj, String type, boolean saveOrDelete) throws JSONException {
         String toast;
         if(saveOrDelete) {
@@ -500,14 +577,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Toast.LENGTH_SHORT).show();
     }
 
-    // Save JSON object to sharedPreferences
+
+    /**
+     * Save JSON object to sharedPreferences
+     * @param myList - type being saved
+     * @param saveFile - file to save to
+     * @param arr - updated array saving
+     */
     private void saveJSON(String myList, String saveFile, ArrayList<JSONObject> arr) {
         SharedPreferences sharedPreferences = getSharedPreferences(saveFile, MODE_PRIVATE);
         SharedPreferences.Editor prefEditor = sharedPreferences.edit();
         Gson gson = new Gson();
         String typeList = gson.toJson(arr);
         prefEditor.putString( myList, typeList );
-        System.out.println("saveJDON myList = " + myList);
+        System.out.println("saveJSON myList = " + myList);
         prefEditor.apply();
     }
 }
