@@ -15,6 +15,10 @@ import android.widget.TextView;
 
 import org.json.JSONException;
 
+
+/**
+ * fragment class to display the search page to retrieve json data from api
+ */
 public class SearchFragment extends Fragment {
     private Button searchButton;
     private CheckBox movieCheck;
@@ -25,6 +29,8 @@ public class SearchFragment extends Fragment {
     private CheckBox podcastCheck;
     private CheckBox gameCheck;
     private TextView searchName;
+
+
 
     @Nullable
     @Override
@@ -42,7 +48,9 @@ public class SearchFragment extends Fragment {
         gameCheck = (CheckBox) v.findViewById(R.id.gamesCheckBox);
         searchName = (TextView) v.findViewById(R.id.recommendationText);
 
-        // when checkbox clicked set the URL parameter
+        /**
+         * when checkbox clicked set the URL parameter
+         */
         movieCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -119,7 +127,11 @@ public class SearchFragment extends Fragment {
         return v;
     }
 
-    // Set the URL parameter when checkbox checked/unchecked for GET request
+    /**
+     * Set the URL parameter when checkbox checked/unchecked for GET request
+     * @param toSet - string to add to search url
+     * @param box - box being checked
+     */
     private void setTypesCheckList(String toSet, CheckBox box){
         ((MainActivity)getActivity()).setTypeList(toSet, (box.isChecked()));
     }
